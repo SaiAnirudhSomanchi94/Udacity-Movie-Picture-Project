@@ -51,7 +51,7 @@ jobs:
     name: Build Docker Image
     needs:
       - lint
-      - frontend  # Ensure the build only happens if lint and test jobs succeed
+      - test  # Ensure the build only happens if lint and test jobs succeed
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
