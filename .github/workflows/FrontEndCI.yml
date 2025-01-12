@@ -23,6 +23,9 @@ jobs:
       
       - name: Navigate to frontend directory
         run: cd starter/frontend  # Change to the frontend directory
+      
+      - name: Show files
+        run: ls 
 
       - name: Install dependencies
         run: npm install
