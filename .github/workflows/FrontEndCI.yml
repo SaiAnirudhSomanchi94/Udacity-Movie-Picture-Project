@@ -22,7 +22,7 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies
-        run: npm install starter/frontend/package.json
+        run: npm install starter/frontend/
 
       - name: Run ESLint
         run: npx eslint frontend/ --ext .js,.jsx,.ts,.tsx --max-warnings 0
@@ -41,7 +41,7 @@ jobs:
           node-version: '16'
 
       - name: Install dependencies
-        run: npm install starter/frontend/package.json
+        run: npm install starter/frontend/
 
       - name: Run tests
         run: npm test  # Assuming npm test is configured in package.json
