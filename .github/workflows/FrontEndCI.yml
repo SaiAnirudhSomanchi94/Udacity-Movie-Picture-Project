@@ -20,15 +20,9 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '18'
-      
-      - name: Navigate to frontend directory
-        run: cd starter/frontend/  # Change to the frontend directory
-      
-      - name: Show files
-        run: ls 
 
       - name: Install dependencies
-        run: npm install
+        run: npm install starter/frontend/package.json
 
       - name: Run ESLint
         run: npx eslint frontend/ --ext .js,.jsx,.ts,.tsx --max-warnings 0
@@ -47,7 +41,7 @@ jobs:
           node-version: '16'
 
       - name: Install dependencies
-        run: npm install
+        run: npm install starter/frontend/package.json
 
       - name: Run tests
         run: npm test  # Assuming npm test is configured in package.json
