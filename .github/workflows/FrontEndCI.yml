@@ -44,14 +44,14 @@ jobs:
         run: npm install starter/frontend/
 
       - name: Run tests
-        run: npm test  # Assuming npm test is configured in package.json
+        run: npm frontend  # Assuming npm test is configured in package.json
 
   build:
     runs-on: ubuntu-latest
     name: Build Docker Image
     needs:
       - lint
-      - test  # Ensure the build only happens if lint and test jobs succeed
+      - frontend  # Ensure the build only happens if lint and test jobs succeed
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
