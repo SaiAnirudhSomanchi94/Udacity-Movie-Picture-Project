@@ -25,7 +25,7 @@ jobs:
         run: npm install starter/frontend/
 
       - name: Run ESLint
-        run: npx eslint frontend/ --ext .js,.jsx,.ts,.tsx --max-warnings 0
+        run: npx eslint starter/frontend/ --ext .js,.jsx,.ts,.tsx --max-warnings 0
 
   test:
     runs-on: ubuntu-latest
