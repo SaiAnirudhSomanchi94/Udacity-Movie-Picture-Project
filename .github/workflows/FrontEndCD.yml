@@ -1,4 +1,4 @@
-name: CI/CD Workflow Front End
+name: 2. CI/CD Workflow Front End
 
 on:
   push:

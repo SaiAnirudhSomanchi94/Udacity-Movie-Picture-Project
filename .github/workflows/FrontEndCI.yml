@@ -1,4 +1,4 @@
-name: CI Workflow - Front End Config
+name: 1. CI Workflow - Front End Config
 
 on:
   pull_request:
