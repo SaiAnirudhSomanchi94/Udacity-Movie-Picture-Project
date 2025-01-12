@@ -1,0 +1,73 @@
+name: CI Workflow - Front End Config
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'frontend/**'  # Trigger only when code in the frontend changes
+  workflow_dispatch:  # Allow manual triggers
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    name: Lint Code
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: latest
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run ESLint
+        run: npx eslint frontend/ --ext .js,.jsx,.ts,.tsx --max-warnings 0
+
+  test:
+    runs-on: ubuntu-latest
+    name: Run Tests
+    needs: lint  # Only run after the lint job
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test  # Assuming npm test is configured in package.json
+
+  build:
+    runs-on: ubuntu-latest
+    name: Build Docker Image
+    needs:
+      - lint
+      - test  # Ensure the build only happens if lint and test jobs succeed
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Build Docker Image
+        run: |
+          cd starter/frontend
+          docker build -t frontend-image .
