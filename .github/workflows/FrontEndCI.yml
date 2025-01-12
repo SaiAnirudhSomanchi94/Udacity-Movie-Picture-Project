@@ -22,7 +22,7 @@ jobs:
           node-version: '18'
       
       - name: Navigate to frontend directory
-        run: cd starter/frontend  # Change to the frontend directory
+        run: cd starter/frontend/  # Change to the frontend directory
       
       - name: Show files
         run: ls 
