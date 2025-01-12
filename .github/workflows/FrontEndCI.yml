@@ -44,10 +44,10 @@ jobs:
         run: npm install starter/frontend/
       
       - name: Run run
-        run: npm run 
+        run: npm run starter/frontend/
 
       - name: Run tests
-        run: npm test  # Assuming npm test is configured in package.json
+        run: npm test starter/frontend/ # Assuming npm test is configured in package.json
 
   build:
     runs-on: ubuntu-latest
