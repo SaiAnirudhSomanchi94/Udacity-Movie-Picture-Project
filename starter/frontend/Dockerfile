@@ -25,6 +25,12 @@ COPY starter/frontend/public/* ./public/
 RUN mkdir src
 COPY starter/frontend/src/* ./src/
 
+RUN mkdir src/components
+COPY starter/frontend/src/components/* ./src/components/
+
+RUN mkdir src/components/__tests__
+COPY starter/frontend/src/components/__tests__/* ./src/components/__tests__/
+
 RUN ls
 # RUN cp starter/frontend/public/* /app/public/*
 
