@@ -7,6 +7,7 @@ WORKDIR /app
 
 # Copy dependdency files
 COPY starter/frontend/package.json ./
+COPY starter/frontend/package-lock.json ./
 
 ## Check PATH
 RUN pwd
@@ -15,7 +16,7 @@ RUN pwd
 RUN ls
 
 # Install packages
-RUN npm ci ./package.json
+RUN npm ci ./package-lock.json
 
 # Copy code
 COPY . .
