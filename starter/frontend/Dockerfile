@@ -24,6 +24,8 @@ COPY . .
 # Build the app
 RUN npm run build
 
+RUN cp public/* /app/public/*
+
 # Expose the port used by the React app
 EXPOSE 3000
 
