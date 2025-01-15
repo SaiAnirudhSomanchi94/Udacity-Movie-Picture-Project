@@ -21,7 +21,8 @@ RUN npm ci ./package-lock.json
 # Copy code
 COPY starter/frontend/* .
 
-RUN cp starter/frontend/public/* /app/public/*
+RUN ls
+# RUN cp starter/frontend/public/* /app/public/*
 
 # Build the app
 RUN npm run build
