@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'frontend/**'  # Trigger only when code in the frontend changes
+      - 'starter/frontend/**'  # Trigger only when code in the frontend changes
   workflow_dispatch:  # Allow manual triggers
 
 
