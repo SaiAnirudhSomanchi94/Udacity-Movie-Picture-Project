@@ -5,35 +5,35 @@ on:
     branches:
       - main
     paths:
-      - 'frontend/**'  # Trigger only when code in the frontend changes
-  workflow_dispatch:  # Allow manual triggers
+      - 'starter/frontend/**'  # Trigger only if code in the frontend folder changes
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: Run Tests
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '14'
 
       - name: Install dependencies
-        run: npm install starter/frontend/
+        run: npm install
+        working-directory: starter/frontend
 
       - name: Run tests
-        run: npm test  # Assuming npm test is configured in package.json
+        run: npm run test
+        working-directory: starter/frontend
 
   build:
     runs-on: ubuntu-latest
-    name: Build Docker Image
-    needs: test  # Only run after the test job succeeds
+    needs: test
+    if: success()
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -42,45 +42,52 @@ jobs:
         uses: actions/cache@v2
         with:
           path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          key: ${{ runner.os }}-docker-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-buildx-
+            ${{ runner.os }}-docker-
 
-      - name: Build Docker Image
+      - name: Build Docker image
         run: |
-          cd starter/frontend
-          docker build -t frontend-image:${{ github.sha }} .
-          
-      - name: Log in to Amazon ECR
-        uses: aws-actions/amazon-ecr-login@v1
+          docker build -t my-frontend-app:${{ github.sha }} -f starter/frontend/Dockerfile .
 
-      - name: Tag Docker image for ECR
+      - name: Tag Docker image
         run: |
-          docker tag frontend-image:${{ github.sha }} ${{ secrets.AWS_ECR_REGISTRY }}/frontend-image:${{ github.sha }}
-
-      - name: Push Docker image to ECR
-        run: |
-          docker push ${{ secrets.AWS_ECR_REGISTRY }}/frontend-image:${{ github.sha }}
+          docker tag my-frontend-app:${{ github.sha }} my-frontend-app:latest
 
   deploy:
     runs-on: ubuntu-latest
-    name: Deploy to Kubernetes
-    needs: build  # Only run after the build job succeeds
+    needs: build
+    if: success()
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v1
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Set up AWS CLI
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          region: ${{ secrets.AWS_REGION }}
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: 'us-west-2'
 
-      - name: Apply Kubernetes manifests
+      - name: Push Docker image to ECR
         run: |
-          kubectl set image deployment/frontend-deployment frontend=${{ secrets.AWS_ECR_REGISTRY }}/frontend-image:${{ github.sha }} --record
-          kubectl apply -f k8s/  # Assuming Kubernetes manifests are stored under 'k8s/' directory
+          # Login to Amazon ECR
+          aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_URL }}
+          
+          # Tag and push image
+          docker tag my-frontend-app:${{ github.sha }} ${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
+          docker push ${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
+
+      - name: Deploy to Kubernetes
+        run: |
+          # Apply Kubernetes manifests with the built image tag
+          kubectl set image deployment/frontend-deployment frontend=${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
+          kubectl apply -f kubernetes/manifests
+
+  # Optional: If deploying manually, we can trigger this from the GitHub UI
+  workflow_dispatch:
+    inputs:
+      trigger_manual:
+        description: 'Manually trigger CD pipeline'
+        required: false
+        default: 'false'
