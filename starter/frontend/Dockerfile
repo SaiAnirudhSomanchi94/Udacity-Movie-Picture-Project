@@ -15,10 +15,10 @@ RUN npm ci
 COPY . .
 
 ## Check PATH
-PWD
+RUN pwd
 
 # Check files
-ls
+RUN ls
 
 # Build the app
 RUN npm run build
