@@ -19,7 +19,11 @@ RUN ls
 RUN npm ci ./package-lock.json
 
 # Copy code
-COPY starter/frontend/* .
+RUN mkdir public
+COPY starter/frontend/public/* ./public/
+
+RUN mkdir src
+COPY starter/frontend/src/* ./src/
 
 RUN ls
 # RUN cp starter/frontend/public/* /app/public/*
