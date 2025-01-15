@@ -15,7 +15,7 @@ RUN pwd
 RUN ls
 
 # Install packages
-RUN npm ci /package.json
+RUN npm ci /app/package.json
 
 # Copy code
 COPY . .
