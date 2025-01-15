@@ -6,7 +6,7 @@ ENV REACT_APP_MOVIE_API_URL=${REACT_APP_MOVIE_API_URL}
 WORKDIR /app
 
 # Copy dependdency files
-COPY package*.json ./
+COPY package.json ./
 
 ## Check PATH
 RUN pwd
@@ -15,11 +15,10 @@ RUN pwd
 RUN ls
 
 # Install packages
-RUN npm ci
+RUN npm ci /package.json
 
 # Copy code
 COPY . .
-
 
 # Build the app
 RUN npm run build
