@@ -68,12 +68,12 @@ jobs:
         with:
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_region: 'us-west-2'
+          aws_region: ${{ secrets.REGION }}
 
       - name: Push Docker image to ECR
         run: |
           # Login to Amazon ECR
-          aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_URL }}
+          aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_URL }}
           
           # Tag and push image
           docker tag my-frontend-app:${{ github.sha }} ${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
