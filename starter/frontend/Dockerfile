@@ -8,17 +8,18 @@ WORKDIR /app
 # Copy dependdency files
 COPY package*.json ./
 
+## Check PATH
+RUN pwd
+
+# Check files
+RUN ls
+
 # Install packages
 RUN npm ci
 
 # Copy code
 COPY . .
 
-## Check PATH
-RUN pwd
-
-# Check files
-RUN ls
 
 # Build the app
 RUN npm run build
