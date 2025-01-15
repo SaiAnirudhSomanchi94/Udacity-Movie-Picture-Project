@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'starter/frontend/**'  # Trigger only if code in the frontend folder changes
+  workflow_dispatch:  # Allows manual triggering of the workflow
 
 jobs:
   test:
@@ -84,10 +85,3 @@ jobs:
           kubectl set image deployment/frontend-deployment frontend=${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
           kubectl apply -f kubernetes/manifests
 
-  # Optional: If deploying manually, we can trigger this from the GitHub UI
-  workflow_dispatch:
-    inputs:
-      trigger_manual:
-        description: 'Manually trigger CD pipeline'
-        required: false
-        default: 'false'
