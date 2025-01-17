@@ -96,7 +96,7 @@ jobs:
 
       - name: Check to Kubernetes
         run: |
-          find . -type d -name "kubernetes"
+          find / -type d -name "kubernetes"
 
       - name: List files in kubernetes directory
         run: |
