@@ -94,15 +94,18 @@ jobs:
 
       - name: Login to ECR
         run: |
-          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_URL }}
+          aws ecr get-login-password --region ${{ secrets.REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_URL }}
 
-      - name: Get Kubernetes
+      - name: Configure kubeconfig for EKS
+        run: |
+          aws eks update-kubeconfig --region ${{ secrets.REGION }} --name my-cluster-1
+
+      - name: Verify Kubernetes Cluster Info
         run: |
           kubectl cluster-info
 
-      - name: Deploy to Kubernetes
+      - name: Set image for Deployment
         run: |
-          # Apply Kubernetes manifests with the built image tag
           kubectl set image deployment/frontend-deployment frontend=${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
 
       - name: Deploy to Kubernetes
