@@ -55,10 +55,10 @@ jobs:
         run: |
           docker tag my-frontend-app:${{ github.sha }} my-frontend-app:latest
       
-      - name: List Docker Images
+      - name: Push Docker image to ECR
         run: |
-          docker images
-          docker ps
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_URL }}
+          docker push ${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -78,12 +78,6 @@ jobs:
       - name: Login to ECR
         run: |
           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_URL }}
-
-      - name: Push Docker image to ECR
-        run: |
-          # Tag and push the Docker image to ECR
-          docker tag my-frontend-app:${{ github.sha }} ${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
-          docker push ${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
 
       - name: Deploy to Kubernetes
         run: |
