@@ -76,6 +76,22 @@ jobs:
           echo ${{ secrets.REGION }}
           docker tag my-frontend-app:${{ github.sha }} ${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
           docker push ${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
+      
+      - name: Configure kubeconfig for EKS
+        run: |
+          aws eks update-kubeconfig --region ${{ secrets.REGION }} --name my-cluster-1
+
+      - name: Kubernetes Get Deployments
+        run: |
+          kubectl get deployments
+
+      - name: Set image for Deployment
+        run: |
+          kubectl set image deployment/frontend-deployment frontend=${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
+
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl apply -f kubernetes/manifests
 
   deploy:
     runs-on: ubuntu-latest
@@ -92,22 +108,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.REGION }}
 
-      - name: Login to ECR
+      - name: Deployed
         run: |
-          aws ecr get-login-password --region ${{ secrets.REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_URL }}
+          echo "Deployed"
 
-      - name: Configure kubeconfig for EKS
-        run: |
-          aws eks update-kubeconfig --region ${{ secrets.REGION }} --name my-cluster-1
-
-      - name: Kubernetes Get Deployments
-        run: |
-          kubectl get deployments
-
-      - name: Set image for Deployment
-        run: |
-          kubectl set image deployment/frontend-deployment frontend=${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
-
-      - name: Deploy to Kubernetes
-        run: |
-          kubectl apply -f kubernetes/manifests
+      
