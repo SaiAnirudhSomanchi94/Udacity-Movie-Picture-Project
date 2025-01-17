@@ -61,6 +61,10 @@ jobs:
       - name: List Docker images (debugging)
         run: |
           docker images  # List all Docker images to verify the image exist
+
+      - name: Create ECR repository (if it doesn't exist)
+        run: |
+          aws ecr describe-repositories --repository-name my-frontend-app || aws ecr create-repository --repository-name my-frontend-app
       
       - name: Tag Docker image for ECR
         run: |
