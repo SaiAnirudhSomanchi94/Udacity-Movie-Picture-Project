@@ -62,18 +62,16 @@ jobs:
         run: |
           docker images  # List all Docker images to verify the image exist
 
+      - name: Create ECR repository (if it doesn't exist)
+        run: |
+          aws ecr describe-repositories --repository-name my-frontend-app  --region ${{ secrets.REGION }} || aws ecr create-repository --repository-name my-frontend-app  --region ${{ secrets.REGION }}
+      
       - name: Login to ECR
         run: |
           aws ecr get-login-password --region ${{ secrets.REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_URL }}
 
-      - name: Create ECR repository (if it doesn't exist)
-        run: |
-          aws ecr describe-repositories --repository-name my-frontend-app  --region ${{ secrets.REGION }} || aws ecr create-repository --repository-name my-frontend-app  --region ${{ secrets.REGION }}
-
       - name: Push Docker image to ECR
         run: |
-          echo ${{ secrets.AWS_ECR_URL }}
-          echo ${{ secrets.REGION }}
           docker tag my-frontend-app:${{ github.sha }} ${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
           docker push ${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
       
@@ -94,17 +92,9 @@ jobs:
         run: |
           kubectl set image deployment/frontend frontend=${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
 
-      - name: Check to Kubernetes
+      - name: Verify Deployment
         run: |
-          find / -type d -name "kubernetes"
-
-      - name: List files in kubernetes directory
-        run: |
-          ls -R kubernetes
-
-      - name: Deploy to Kubernetes
-        run: |
-          kubectl apply -f kubernetes/manifests
+          kubectl rollout status deployment/frontend-deployment
 
   deploy:
     runs-on: ubuntu-latest
