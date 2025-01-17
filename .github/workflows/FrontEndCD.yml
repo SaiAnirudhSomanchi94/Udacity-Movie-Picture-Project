@@ -96,15 +96,14 @@ jobs:
         run: |
           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_URL }}
 
+      - name: Get Kubernetes
+        run: |
+          kubectl cluster-info
+
       - name: Deploy to Kubernetes
         run: |
           # Apply Kubernetes manifests with the built image tag
           kubectl set image deployment/frontend-deployment frontend=${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
-          
-
-      - name: Get Kubernetes
-        run: |
-          kubectl cluster-info
 
       - name: Deploy to Kubernetes
         run: |
