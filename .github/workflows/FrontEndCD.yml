@@ -100,9 +100,9 @@ jobs:
         run: |
           aws eks update-kubeconfig --region ${{ secrets.REGION }} --name my-cluster-1
 
-      - name: Verify Kubernetes Cluster Info
+      - name: Kubernetes Get Deployments
         run: |
-          kubectl cluster-info
+          kubectl get deployments
 
       - name: Set image for Deployment
         run: |
