@@ -81,6 +81,11 @@ jobs:
         run: |
           aws eks update-kubeconfig --region ${{ secrets.REGION }} --name my-cluster-1
 
+      - name: Kubernetes Configure
+        run: |
+          kubectl apply -f starter/frontend/k8s/service.yaml
+          kubectl apply -f starter/frontend/k8s/deployment.yaml
+
       - name: Kubernetes Get Deployments
         run: |
           kubectl get deployments
