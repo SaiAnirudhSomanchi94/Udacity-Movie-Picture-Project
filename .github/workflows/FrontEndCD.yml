@@ -100,4 +100,5 @@ jobs:
         run: |
           # Apply Kubernetes manifests with the built image tag
           kubectl set image deployment/frontend-deployment frontend=${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
+          kubectl cluster-info
           kubectl apply -f kubernetes/manifests
