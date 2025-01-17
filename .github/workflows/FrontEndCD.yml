@@ -54,6 +54,11 @@ jobs:
       - name: Tag Docker image
         run: |
           docker tag my-frontend-app:${{ github.sha }} my-frontend-app:latest
+      
+      - name: List Docker Images
+        run: |
+          docker images
+          docker ps
 
   deploy:
     runs-on: ubuntu-latest
