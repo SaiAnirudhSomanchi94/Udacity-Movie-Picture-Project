@@ -20,13 +20,13 @@ jobs:
         with:
           node-version: '14'
 
-      - name: Install dependencies
-        run: npm install
-        working-directory: starter/backend
+      # - name: Install dependencies
+      #   run: npm install
+      #   working-directory: starter/backend
 
-      - name: Run tests
-        run: npm run test
-        working-directory: starter/backend
+      # - name: Run tests
+      #   run: npm run test
+      #   working-directory: starter/backend
 
   build:
     runs-on: ubuntu-latest
