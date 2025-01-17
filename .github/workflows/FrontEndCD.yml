@@ -92,7 +92,7 @@ jobs:
 
       - name: Set image for Deployment
         run: |
-          kubectl set image deployment/frontend-deployment frontend=${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
+          kubectl set image deployment/frontend frontend=${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
 
       - name: Deploy to Kubernetes
         run: |
