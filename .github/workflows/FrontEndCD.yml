@@ -73,7 +73,9 @@ jobs:
       - name: Push Docker image to ECR
         run: |
           # Login to Amazon ECR
-          aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_URL }}
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_URL }}
+          # aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 374606205328.dkr.ecr.us-east-1.amazonaws.com/my-cluster-repo
+
           
           # Tag and push image
           docker tag my-frontend-app:${{ github.sha }} ${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
