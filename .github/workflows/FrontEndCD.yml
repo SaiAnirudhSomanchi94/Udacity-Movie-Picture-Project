@@ -75,18 +75,13 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.REGION }}
 
-      - name: List Docker Images
+      - name: Login to ECR
         run: |
-          docker images
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_URL }}
 
       - name: Push Docker image to ECR
         run: |
-          # Login to Amazon ECR
-          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_URL }}
-          # aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 374606205328.dkr.ecr.us-east-1.amazonaws.com/my-cluster-repo
-
-          
-          # Tag and push image
+          # Tag and push the Docker image to ECR
           docker tag my-frontend-app:${{ github.sha }} ${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
           docker push ${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
 
@@ -95,4 +90,3 @@ jobs:
           # Apply Kubernetes manifests with the built image tag
           kubectl set image deployment/frontend-deployment frontend=${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
           kubectl apply -f kubernetes/manifests
-
