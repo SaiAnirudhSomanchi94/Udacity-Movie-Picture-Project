@@ -94,13 +94,13 @@ jobs:
         run: |
           kubectl set image deployment/frontend frontend=${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
 
-      - name: List files in kubernetes directory
-        run: |
-          ls -R kubernetes
-
       - name: Check to Kubernetes
         run: |
           find . -type d -name "kubernetes"
+
+      - name: List files in kubernetes directory
+        run: |
+          ls -R kubernetes
 
       - name: Deploy to Kubernetes
         run: |
