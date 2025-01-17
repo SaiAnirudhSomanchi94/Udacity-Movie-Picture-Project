@@ -50,10 +50,6 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t my-frontend-app:${{ github.sha }} -f starter/frontend/Dockerfile .
-
-      - name: Tag Docker image
-        run: |
-          docker tag my-frontend-app:${{ github.sha }} my-frontend-app:${{ github.sha }}
       
       - name: Set up AWS CLI
         uses: aws-actions/configure-aws-credentials@v1
@@ -62,6 +58,14 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.REGION }}
       
+      - name: List Docker images (debugging)
+        run: |
+          docker images  # List all Docker images to verify the image exist
+      
+      - name: Tag Docker image for ECR
+        run: |
+          docker tag my-frontend-app:${{ github.sha }} ${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
+
       - name: Push Docker image to ECR
         run: |
           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_URL }}
