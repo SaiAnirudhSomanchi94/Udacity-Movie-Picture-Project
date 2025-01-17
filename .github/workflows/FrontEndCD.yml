@@ -72,6 +72,8 @@ jobs:
 
       - name: Push Docker image to ECR
         run: |
+          echo ${{ secrets.AWS_ECR_URL }}
+          echo ${{ secrets.REGION }}
           docker tag my-frontend-app:${{ github.sha }} ${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
           docker push ${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
 
