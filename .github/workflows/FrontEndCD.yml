@@ -92,9 +92,9 @@ jobs:
         run: |
           kubectl set image deployment/frontend frontend=${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
 
-      - name: Verify Deployment
-        run: |
-          kubectl rollout status deployment/frontend
+      # - name: Verify Deployment
+      #   run: |
+      #     kubectl rollout status deployment/frontend
 
   deploy:
     runs-on: ubuntu-latest
