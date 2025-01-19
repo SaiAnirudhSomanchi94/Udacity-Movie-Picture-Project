@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: 809883379211.dkr.ecr.us-east-1.amazonaws.com/my-frontend-app:d4c6bafa6859749c621e8e9d325bfad0d21be18e
+          image: ${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
           ports:
             - containerPort: 3000
