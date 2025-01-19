@@ -24,7 +24,7 @@ COPY . /app/
 
 RUN ls /app/
 
-RUN cd /app && pipenv install --system --deploy --ignore-pipfile
+RUN cd /app/ && pipenv install --system --deploy --ignore-pipfile
 
 COPY . /app
 
