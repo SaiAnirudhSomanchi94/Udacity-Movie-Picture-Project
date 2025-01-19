@@ -24,6 +24,25 @@ jobs:
         run: |
           cd frontend
           npm run lint
+  
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: starter/backend
+
+      - name: Run tests
+        run: npm run test
+        working-directory: starter/backend
 
   build:
     name: Build Docker Image
