@@ -21,8 +21,11 @@ COPY Pipfile /app
 # COPY Pipfile.lock /app
 
 # RUN cd /app && pipenv install --system --deploy
+RUN cd /app && pipenv lock
 
-RUN cd /app && pipenv install --system --deploy --ignore-pipfile
+RUN cd /app && ls
+
+RUN cd /app && pipenv install --system --deploy 
 
 COPY . /app
 
