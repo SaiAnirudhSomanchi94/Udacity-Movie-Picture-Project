@@ -82,7 +82,7 @@ jobs:
 
       - name: Create ECR repository (if it doesn't exist)
         run: |
-          aws ecr describe-repositories --repository-name my-backend-app  --region ${{ secrets.REGION }} || aws ecr create-repository --repository-name my-frontend-app  --region ${{ secrets.REGION }}
+          aws ecr describe-repositories --repository-name my-backend-app  --region ${{ secrets.REGION }} || aws ecr create-repository --repository-name my-backend-app  --region ${{ secrets.REGION }}
 
       - name: Login to ECR
         run: |
@@ -99,8 +99,8 @@ jobs:
 
       - name: Kubernetes Configure
         run: |
-          kubectl apply -f starter/frontend/k8s/service.yaml
-          kubectl apply -f starter/frontend/k8s/deployment.yaml
+          kubectl apply -f starter/backend/k8s/service.yaml
+          kubectl apply -f starter/backend/k8s/deployment.yaml
 
       - name: Kubernetes Get Deployments
         run: |
@@ -108,7 +108,7 @@ jobs:
 
       - name: Set image for Deployment
         run: |
-          kubectl set image deployment/frontend frontend=${{ secrets.AWS_ECR_URL }}/my-frontend-app:${{ github.sha }}
+          kubectl set image deployment/backend backend=${{ secrets.AWS_ECR_URL }}/my-backend-app:${{ github.sha }}
 
   deploy:
     name: Deploy Kubernetes Manifests
