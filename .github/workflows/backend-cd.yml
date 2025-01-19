@@ -79,11 +79,36 @@ jobs:
           AWS_REGION: us-east-1  # Update with your region
         run: |
           aws eks update-kubeconfig --name my-cluster-1
-      - name: Set image tag and apply manifests
+
+      - name: Create ECR repository (if it doesn't exist)
         run: |
-          kubectl edit set image backend=${{ secrets.AWS_ECR_URL }}/my-backend-app:${{ github.sha }}
-          kubectl build | kubectl apply -f -
-        working-directory: starter/backend/k8s
+          aws ecr describe-repositories --repository-name my-backend-app  --region ${{ secrets.REGION }} || aws ecr create-repository --repository-name my-backend-app  --region ${{ secrets.REGION }}
+
+      - name: Login to ECR
+        run: |
+          aws ecr get-login-password --region ${{ secrets.REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_URL }}
+
+      - name: Push Docker image to ECR
+        run: |
+          docker tag my-backend-app:${{ github.sha }} ${{ secrets.AWS_ECR_URL }}/my-backend-app:${{ github.sha }}
+          docker push ${{ secrets.AWS_ECR_URL }}/my-backend-app:${{ github.sha }}
+
+      - name: Configure kubeconfig for EKS
+        run: |
+          aws eks update-kubeconfig --region ${{ secrets.REGION }} --name my-cluster-1
+
+      - name: Kubernetes Configure
+        run: |
+          kubectl apply -f starter/backend/k8s/service.yaml
+          kubectl apply -f starter/backend/k8s/deployment.yaml
+
+      - name: Kubernetes Get Deployments
+        run: |
+          kubectl get deployments
+
+      - name: Set image for Deployment
+        run: |
+          kubectl set image deployment/backend backend=${{ secrets.AWS_ECR_URL }}/my-backend-app:${{ github.sha }}
 
   deploy:
     name: Deploy Kubernetes Manifests
