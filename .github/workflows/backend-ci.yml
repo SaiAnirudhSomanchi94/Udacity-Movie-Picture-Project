@@ -18,12 +18,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd starter/backend
           npm install
+        working-directory: starter/frontend
       - name: Run eslint
         run: |
-          cd starter/backend
           npm run lint
+        working-directory: starter/frontend
   
   test:
     runs-on: ubuntu-latest
@@ -38,11 +38,11 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: starter/backend
+        working-directory: starter/frontend
 
       - name: Run tests
         run: npm run test
-        working-directory: starter/backend
+        working-directory: starter/frontend
 
   build:
     name: Build Docker Image
@@ -57,3 +57,4 @@ jobs:
         run: |
           cd backend
           docker build -t my-backend-app:${{ github.sha }} -f starter/backend/Dockerfile .
+
