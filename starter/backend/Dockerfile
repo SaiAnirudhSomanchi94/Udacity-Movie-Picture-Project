@@ -1,4 +1,4 @@
-FROM public.ecr.aws/docker/library/python:3.10-alpine
+FROM public.ecr.aws/docker/library/python:3.10
 ENV FLASK_RUN_HOST=0.0.0.0
 
 WORKDIR /
@@ -24,7 +24,8 @@ COPY . /app/
 
 RUN ls /app/
 
-RUN cd /app/ && pipenv install --system --deploy --ignore-pipfile
+# RUN cd /app/ && 
+RUN pipenv install --system --deploy --ignore-pipfile
 
 COPY . /app
 
