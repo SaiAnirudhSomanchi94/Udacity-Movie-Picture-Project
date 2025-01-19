@@ -220,7 +220,7 @@ FAIL_LINT=true npm run lint
 > eslint .
 
 
-/home/kirby/udacity/ci-cd/project/solution/frontend/src/components/MovieDetails.js
+/home/runner/work/Udacity-Movie-Picture-Project/solution/frontend/src/components/MovieDetails.js
   4:24  error  'movie' is missing in props validation     react/prop-types
   7:70  error  'movie.id' is missing in props validation  react/prop-types
 
@@ -287,9 +287,9 @@ pipenv run test
 
 # Expected output
 ================================================================== test session starts ==================================================================
-platform linux -- Python 3.10.6, pytest-7.2.1, pluggy-1.0.0 -- /home/kirby/.local/share/virtualenvs/backend-AXGg_iGk/bin/python
+platform linux -- Python 3.10.6, pytest-7.2.1, pluggy-1.0.0 -- /home/runner/work/Udacity-Movie-Picture-Project/.local/share/virtualenvs/backend-AXGg_iGk/bin/python
 cachedir: .pytest_cache
-rootdir: /home/kirby/udacity/cd12354-build-ci-cd-pipelines-monitoring-and-logging/project/solution/backend
+rootdir: /home/runner/work/Udacity-Movie-Picture-Project/project/solution/backend
 collected 3 items
 
 test_app.py::test_movies_endpoint_returns_200 PASSED                                                                                              [ 33%]
