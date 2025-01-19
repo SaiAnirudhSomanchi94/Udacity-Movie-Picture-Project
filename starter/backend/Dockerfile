@@ -1,4 +1,4 @@
-FROM public.ecr.aws/docker/library/python:3.10
+FROM public.ecr.aws/docker/library/python:3.10-alpine
 ENV FLASK_RUN_HOST=0.0.0.0
 
 WORKDIR /
@@ -16,16 +16,16 @@ RUN apk update && \
 
 RUN mkdir -p /var/www/app && mkdir /app
 
-COPY requirements.txt /app/
-COPY Pipfile /app/
+COPY requirements.txt /app
+COPY Pipfile /app
 # COPY Pipfile.lock /app
-RUN cd /app/ && pipenv lock
-COPY . /app/
 
-RUN ls /app/
+# RUN cd /app && pipenv install --system --deploy
+RUN cd /app && pipenv lock
 
-# RUN cd /app/ && 
-RUN pipenv install --system --deploy --ignore-pipfile
+RUN cd /app && ls
+
+RUN cd /app && pipenv install --system --deploy 
 
 COPY . /app
 
