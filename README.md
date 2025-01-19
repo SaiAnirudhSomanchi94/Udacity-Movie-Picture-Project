@@ -144,6 +144,8 @@ Snapshots:   0 total
 Time:        1.33 s
 Ran all test suites.
 ```
+![Screenshot 2025-01-17 230614](https://github.com/user-attachments/assets/cf804c9c-78ba-4d17-aced-50254ebefb25)
+
 
 To simulate a failure in the test coverage, which will be needed to ensure your CI/CD pipeline fails on bad tests, set the MOVIE_HEADING variable before the command like so:
 
@@ -241,6 +243,8 @@ npm ci
 # Run local development server with hot reloading and point to the backend default
 REACT_APP_MOVIE_API_URL=http://localhost:5000 npm start
 ```
+
+
 
 To build the frontend application for a production deployment, they use the following commands:
 
@@ -390,6 +394,10 @@ docker logs -f mp-backend
 # Stop the application
 docker stop
 ```
+![Screenshot 2025-01-18 003652](https://github.com/user-attachments/assets/acd682a7-17ad-4d91-b8c0-164d78e621c1)
+
+![Screenshot 2025-01-18 004642](https://github.com/user-attachments/assets/3872a9b3-a330-4c1b-8541-37952909b9b7)
+
 
 ### Deploy Kubernetes manifests
 
