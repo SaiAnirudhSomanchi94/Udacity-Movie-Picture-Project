@@ -74,3 +74,4 @@ jobs:
         run: |
           cd starter/backend
           docker build --tag my-backend-app:latest .
+
