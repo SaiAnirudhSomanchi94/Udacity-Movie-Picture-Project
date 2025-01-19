@@ -12,6 +12,7 @@ jobs:
   lint:
     name: Linting
     runs-on: ubuntu-latest
+    steps:
       - name: Install dependencies
         run: |
           cd frontend
@@ -85,5 +86,3 @@ jobs:
       - name: Deploy application
         run: |
           kubectl apply -f k8s/deployment.yaml
-
-      
