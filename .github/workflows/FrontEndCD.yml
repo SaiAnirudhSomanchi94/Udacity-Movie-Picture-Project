@@ -24,7 +24,7 @@ jobs:
         run: npm install
         working-directory: starter/frontend
 
-      - name: Run tests
+      - name: Run linter
         run: npm run lint
         working-directory: starter/frontend
 
@@ -48,9 +48,11 @@ jobs:
             ${{ runner.os }}-docker-
 
       - name: Build Docker image
+        env:
+          REACT_APP_MOVIE_API_URL: ${{ secrets.REACT_APP_MOVIE_API_URL }}
         run: |
           docker build \
-          --build-arg REACT_APP_MOVIE_API_URL=${{ secrets.REACT_APP_MOVIE_API_URL }} \
+          --build-arg=REACT_APP_MOVIE_API_URL="http://$REACT_APP_MOVIE_API_URL/" \
           -t my-frontend-app:${{ github.sha }} \
           -f starter/frontend/Dockerfile .
       
@@ -110,5 +112,3 @@ jobs:
       - name: Deployed
         run: |
           echo "Deployed"
-
-      
