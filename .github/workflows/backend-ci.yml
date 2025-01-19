@@ -1,60 +1,77 @@
 name: 3. CI Workflow - Backend End Config
 
 on:
-  push:
+  pull_request:
     branches:
       - main
     paths:
-      - 'starter/backend/**'  # Trigger only if code in the backend folder changes
-  workflow_dispatch:  # Allows manual triggering of the workflow
+      - 'starter/backend/**'
+  workflow_dispatch:
 
 jobs:
-  lint:
-    name: Linting
+  test:
+    name: Run Backend Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install dependencies
-        run: |
-          npm install
-        working-directory: starter/frontend
-      - name: Run eslint
-        run: |
-          npm run lint
-        working-directory: starter/frontend
-  
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          node-version: '14'
+          python-version: '3.10'
+
+      - name: Install pipenv
+        run: pip install pipenv
+        working-directory: starter/backend
 
       - name: Install dependencies
-        run: npm install
-        working-directory: starter/frontend
+        run: |
+          cd starter/backend
+          pipenv install
+        working-directory: starter/backend
 
       - name: Run tests
-        run: npm run test
-        working-directory: starter/frontend
+        run: |
+          cd starter/backend
+          pipenv run test
+        working-directory: starter/backend
+
+  lint:
+    name: Run Linter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install pipenv
+        run: pip install pipenv
+        working-directory: starter/backend
+
+      - name: Install dependencies
+        run: |
+          cd starter/backend
+          pipenv install
+        working-directory: starter/backend
+
+      - name: Run linter
+        run: |
+          cd starter/backend
+          pipenv run lint
+        working-directory: starter/backend
 
   build:
     name: Build Docker Image
     runs-on: ubuntu-latest
-    needs: [lint]
-    if: ${{ needs.lint.result == 'success' }}
+    needs: [test, lint]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
       - name: Build Docker image
         run: |
-          cd backend
-          docker build -t my-backend-app:${{ github.sha }} -f starter/backend/Dockerfile .
+          cd starter/backend
+          docker build --tag my-backend-app:latest .
 
