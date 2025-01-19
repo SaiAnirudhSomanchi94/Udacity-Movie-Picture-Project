@@ -18,7 +18,10 @@ RUN mkdir -p /var/www/app && mkdir /app
 
 COPY requirements.txt /app
 COPY Pipfile /app
-COPY Pipfile.lock /app
+# COPY Pipfile.lock /app
+
+# RUN cd /app && pipenv install --system --deploy
+
 RUN cd /app && pipenv install --system --deploy
 
 COPY . /app
