@@ -89,13 +89,13 @@ jobs:
           AWS_REGION: us-east-1  # Update with your region
         run: |
           aws eks update-kubeconfig --name my-cluster-1
-      - name: Install kustomize
-        run: |
-          sudo apt-get update && sudo apt-get install -y kustomize
+      # - name: Install kustomize
+      #   run: |
+      #     sudo apt-get update && sudo apt-get install -y kustomize
       - name: Set image tag and apply manifests
         run: |
-          kustomize edit set image backend=${{ secrets.AWS_ECR_URL }}/my-backend-app:${{ github.sha }}
-          kustomize build | kubectl apply -f -
+          kubectl edit set image backend=${{ secrets.AWS_ECR_URL }}/my-backend-app:${{ github.sha }}
+          kubectl build | kubectl apply -f -
         working-directory: starter/backend/k8s
 
   
