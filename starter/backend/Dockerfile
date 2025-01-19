@@ -22,7 +22,7 @@ COPY Pipfile /app/
 RUN cd /app/ && pipenv lock
 COPY . /app/
 
-RUN ls
+RUN ls /app/
 
 RUN cd /app && pipenv install --system --deploy
 
