@@ -27,13 +27,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd starter/backend
           pipenv install
         working-directory: starter/backend
 
       - name: Run tests
         run: |
-          cd starter/backend
           pipenv run test
         working-directory: starter/backend
 
