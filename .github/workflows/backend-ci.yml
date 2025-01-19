@@ -1,10 +1,12 @@
 name: 3. CI Workflow - Backend End Config
 
 on:
-  pull_request:
+  push:
     branches:
-      - main  # Trigger on PRs to the main branch
-  workflow_dispatch:  # Allows manual triggering
+      - main
+    paths:
+      - 'starter/backend/**'  # Trigger only if code in the frontend folder changes
+  workflow_dispatch:  # Allows manual triggering of the workflow
 
 jobs:
   lint:
@@ -28,7 +30,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
+
       - name: Build Docker image
         run: |
           cd backend

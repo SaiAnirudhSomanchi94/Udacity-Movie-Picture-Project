@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'starter/backend/**'  # Trigger only if code in the backend folder changes
+      - 'starter/backend/**'  # Trigger only if code in the frontend folder changes
   workflow_dispatch:  # Allows manual triggering of the workflow
 
 jobs:
