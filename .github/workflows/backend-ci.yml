@@ -18,11 +18,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd frontend
+          cd starter/backend
           npm install
       - name: Run eslint
         run: |
-          cd frontend
+          cd starter/backend
           npm run lint
   
   test:
