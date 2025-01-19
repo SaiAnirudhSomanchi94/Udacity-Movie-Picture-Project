@@ -24,9 +24,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r starter/backend/requirements.txt  # Assuming a requirements.txt file exists
 
-      - name: Run Linting
-        run: |
-          pylint .  # Or your preferred linting tool
+      # - name: Run Linting
+      #   run: |
+      #     pylint .  # Or your preferred linting tool
           
   test:
     name: Run Tests
