@@ -84,7 +84,8 @@ terraform output
 5. Under `Access keys`  select `Create access key`
 6. Select `Application running outside AWS` and click `Next`, then `Create access key` to finish creating the keys
 7. On the last page, make sure to copy/paste these keys for storing in Github Secrets
-![image](https://user-images.githubusercontent.com/57732284/221991526-ec4af661-b200-48cd-9087-6f1b3b9820b3.png)
+![image](https://github.com/user-attachments/assets/2098afdd-e43b-4267-a37c-206507baf9e4)
+
 
 ### Add Github Action user to Kubernetes
 
@@ -143,6 +144,8 @@ Snapshots:   0 total
 Time:        1.33 s
 Ran all test suites.
 ```
+![Screenshot 2025-01-17 230614](https://github.com/user-attachments/assets/cf804c9c-78ba-4d17-aced-50254ebefb25)
+
 
 To simulate a failure in the test coverage, which will be needed to ensure your CI/CD pipeline fails on bad tests, set the MOVIE_HEADING variable before the command like so:
 
@@ -220,7 +223,7 @@ FAIL_LINT=true npm run lint
 > eslint .
 
 
-/home/kirby/udacity/ci-cd/project/solution/frontend/src/components/MovieDetails.js
+/home/runner/work/Udacity-Movie-Picture-Project/solution/frontend/src/components/MovieDetails.js
   4:24  error  'movie' is missing in props validation     react/prop-types
   7:70  error  'movie.id' is missing in props validation  react/prop-types
 
@@ -240,6 +243,8 @@ npm ci
 # Run local development server with hot reloading and point to the backend default
 REACT_APP_MOVIE_API_URL=http://localhost:5000 npm start
 ```
+
+
 
 To build the frontend application for a production deployment, they use the following commands:
 
@@ -287,9 +292,9 @@ pipenv run test
 
 # Expected output
 ================================================================== test session starts ==================================================================
-platform linux -- Python 3.10.6, pytest-7.2.1, pluggy-1.0.0 -- /home/kirby/.local/share/virtualenvs/backend-AXGg_iGk/bin/python
+platform linux -- Python 3.10.6, pytest-7.2.1, pluggy-1.0.0 -- /home/runner/work/Udacity-Movie-Picture-Project/.local/share/virtualenvs/backend-AXGg_iGk/bin/python
 cachedir: .pytest_cache
-rootdir: /home/kirby/udacity/cd12354-build-ci-cd-pipelines-monitoring-and-logging/project/solution/backend
+rootdir: /home/runner/work/Udacity-Movie-Picture-Project/project/solution/backend
 collected 3 items
 
 test_app.py::test_movies_endpoint_returns_200 PASSED                                                                                              [ 33%]
@@ -389,6 +394,10 @@ docker logs -f mp-backend
 # Stop the application
 docker stop
 ```
+![Screenshot 2025-01-18 003652](https://github.com/user-attachments/assets/acd682a7-17ad-4d91-b8c0-164d78e621c1)
+
+![Screenshot 2025-01-18 004642](https://github.com/user-attachments/assets/3872a9b3-a330-4c1b-8541-37952909b9b7)
+
 
 ### Deploy Kubernetes manifests
 
