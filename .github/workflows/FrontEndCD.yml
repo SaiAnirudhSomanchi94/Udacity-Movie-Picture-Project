@@ -21,7 +21,11 @@ jobs:
           node-version: '14'
 
       - name: Install dependencies
-        run: npm install -- --fix
+        run: npm install 
+        working-directory: starter/frontend
+
+      - name: Run linter fix
+        run: npm run lint -- --fix
         working-directory: starter/frontend
 
       - name: Run linter
