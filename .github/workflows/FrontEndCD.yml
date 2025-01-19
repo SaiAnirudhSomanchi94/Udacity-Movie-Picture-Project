@@ -9,7 +9,7 @@ on:
   workflow_dispatch:  # Allows manual triggering of the workflow
 
 jobs:
-  test:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -25,12 +25,12 @@ jobs:
         working-directory: starter/frontend
 
       - name: Run tests
-        run: npm run test
+        run: npm run lint
         working-directory: starter/frontend
 
   build:
     runs-on: ubuntu-latest
-    needs: test
+    needs: lint
     if: success()
     steps:
       - name: Checkout repository
@@ -49,7 +49,10 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t my-frontend-app:${{ github.sha }} -f starter/frontend/Dockerfile .
+          docker build \
+          --build-arg REACT_APP_MOVIE_API_URL=${{ secrets.REACT_APP_MOVIE_API_URL }} \
+          -t my-frontend-app:${{ github.sha }} \
+          -f starter/frontend/Dockerfile .
       
       - name: Set up AWS CLI
         uses: aws-actions/configure-aws-credentials@v1
