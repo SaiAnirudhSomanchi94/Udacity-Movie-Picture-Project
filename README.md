@@ -84,7 +84,8 @@ terraform output
 5. Under `Access keys`  select `Create access key`
 6. Select `Application running outside AWS` and click `Next`, then `Create access key` to finish creating the keys
 7. On the last page, make sure to copy/paste these keys for storing in Github Secrets
-![image](https://user-images.githubusercontent.com/57732284/221991526-ec4af661-b200-48cd-9087-6f1b3b9820b3.png)
+![image](https://github.com/user-attachments/assets/2098afdd-e43b-4267-a37c-206507baf9e4)
+
 
 ### Add Github Action user to Kubernetes
 
