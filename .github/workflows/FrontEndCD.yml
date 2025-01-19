@@ -92,6 +92,7 @@ jobs:
       - name: Kubernetes Get Deployments
         run: |
           kubectl get deployments
+          kubectl get svc - A
 
       - name: Set image for Deployment
         run: |
