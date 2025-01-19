@@ -49,6 +49,7 @@ jobs:
       - name: Install dependencies
         run: |
           pipenv install
+          pipenv install flake8
         working-directory: starter/backend
 
       - name: Run linter
